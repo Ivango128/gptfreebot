@@ -1,23 +1,27 @@
-import telebot
 from g4f.client import Client
 
-bot = telebot.TeleBot('7071800191:AAGIs28xt9bsQonvemOezuxjG0K1M9U9nGI')
-
-
 def get_info_wolfram(query):
+    # создаем экземпляр чат-бота
     client = Client()
+    # подготавливаем запрос
+    # ВНИМАНИЕ! лучше оставить даннные настройтки по умолчанию
     response = client.chat.completions.create(
+        # указываем модуль чат-gpt
         model="gpt-3.5-turbo",
+        # подставляем текст запроса, под ключ content
         messages=[{"role": "user", "content": query}],
     )
+    # возвращаем ответ от чат-gpt
     return response.choices[0].message.content
 
+import telebot
 
+bot = telebot.TeleBot(token)
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     bot.send_message(message.chat.id, "Привет, чем я могу помочь тебе сегодня?.")
 
-# Обработка геопозиции
+# Обработка всех сообщений
 @bot.message_handler(func=lambda callback: True)
 def handle_location(message):
     try:
